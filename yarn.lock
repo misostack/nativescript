@@ -3127,6 +3127,11 @@ nativescript-permissions@~1.3.0:
   resolved "https://registry.yarnpkg.com/nativescript-permissions/-/nativescript-permissions-1.3.8.tgz#d0da4a0112213a3df3e384341052244815a46ff1"
   integrity sha512-jB5U/WbCRPZ2N4ho8WC7OsEi+UtbbpIBZ9OyLzNIUixr/ODdTeTgxXzGT3CUHyKBqYm9MrIADdNzCGbFaUo+KA==
 
+nativescript-pusher@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/nativescript-pusher/-/nativescript-pusher-1.0.1.tgz#b52fb603d591f3df021e163cd713171e531bd768"
+  integrity sha512-HlrUyQ8acwzkxBvXmHhyDSjIFkA+4AcQ59A1QOTqtGReHAdaJ9UHcDRQ+gl2N+Kocgsq8AiSv50f1o+oIx+0AA==
+
 nativescript-worker-loader@~0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/nativescript-worker-loader/-/nativescript-worker-loader-0.10.0.tgz#e2a45a78ab4a894571126e5295f472c01e378516"
