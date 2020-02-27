@@ -2,6 +2,16 @@
 
 - NativeScript Team's plugins : https://market.nativescript.org/author/tns-bot
 
+## Enviroments
+
+```bash
+env: local,dev,prod
+tns run android --env.app_env=dev
+tns run ios --env.app_env=dev
+tns build android --env.app_env=dev
+tns build ios --env.app_env=dev
+```
+
 ## Basic
 
 - Route

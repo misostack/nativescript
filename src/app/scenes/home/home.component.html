@@ -2,6 +2,7 @@
 <ScrollView>
 	<StackLayout>
 		<Button (tap)="onTap($event)" text="Take Photo"></Button>
+		<Image src="~/assets/images/logo.png" width="50" height="50"></Image>
 		<Image #fingerImage width="250" height="250"></Image>
 		<Label text="{{ description }}" textWrap="true"></Label>
 		<HtmlVIew [html]="htmlString"></HtmlVIew>

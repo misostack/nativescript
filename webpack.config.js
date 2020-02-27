@@ -54,8 +54,10 @@ module.exports = env => {
         verbose, // --env.verbose
         snapshotInDocker, // --env.snapshotInDocker
         skipSnapshotTools, // --env.skipSnapshotTools
-        compileSnapshot // --env.compileSnapshot
+        compileSnapshot, // --env.compileSnapshot
+        app_env // --env.app_env
     } = env;
+    console.log(env)
 
     const useLibs = compileSnapshot;
     const isAnySourceMapEnabled = !!sourceMap || !!hiddenSourceMap;
@@ -296,6 +298,7 @@ module.exports = env => {
             // Define useful constants like TNS_WEBPACK
             new webpack.DefinePlugin({
                 "global.TNS_WEBPACK": "true",
+                "global.APP_ENV": JSON.stringify(env.app_env),
                 "process": "global.process",
             }),
             // Remove all files from the out dir.

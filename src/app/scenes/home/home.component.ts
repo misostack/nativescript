@@ -8,6 +8,10 @@ import * as camera from "nativescript-camera";
 import { Image } from "tns-core-modules/ui/image";
 import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/image-source";
 
+// sample env
+
+import { environment } from '@environments/environment';
+
 const SLIDES = [
 	{
 		title: 'Component',
@@ -43,7 +47,7 @@ export class HomeComponent implements OnInit {
     private http: HttpClient
     ) {
   	// initial default value
-  	this.title = 'NativeScript App2'
+  	this.title = 'NativeScript App - ' + environment.name
   	this.slides = SLIDES
   	this.description = `In NativeScript App, the runtimes enable you to call APIs in the
   	Android and IOS frameworks using Javascript code.

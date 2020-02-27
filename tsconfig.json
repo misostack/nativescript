@@ -13,10 +13,13 @@
             "es2015.iterable"
         ],
         "baseUrl": ".",
+        "moduleResolution": "node",       
         "paths": {
             "~/*": [
                 "src/*"
             ],
+            "@app/*": ["src/app/*"],
+            "@environments/*": ["src/environments/*"],            
             "*": [
                 "./node_modules/*"
             ]
