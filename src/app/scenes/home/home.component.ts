@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { EventData } from "tns-core-modules/data/observable";
+import { Button } from "tns-core-modules/ui/button";
 
 const SLIDES = [
 	{
@@ -27,8 +30,11 @@ export class HomeComponent implements OnInit {
 	description: string
 	htmlString: string
 	slides: Array<{}>
+  countries: Array<{name: string, code: string}>
 
-  constructor() {
+  constructor(
+    private http: HttpClient
+    ) {
   	// initial default value
   	this.title = 'NativeScript App2'
   	this.slides = SLIDES
@@ -43,7 +49,36 @@ export class HomeComponent implements OnInit {
   	`
   }
 
-  ngOnInit(): void {
+  private createRequestHeader() {
+      // set headers here e.g.
+      let headers = new HttpHeaders({
+          "AuthKey": "my-key",
+          "AuthToken": "my-token",
+          "Content-Type": "application/json",
+       });
+
+      return headers;
   }
 
+  getCountries() {
+    let headers = this.createRequestHeader();
+    return this.http.get('~/assets/data/countries.json', { headers: headers });    
+  }
+
+  bindCountries(countries) {
+    this.countries = countries
+  }
+
+  ngOnInit(): void {
+
+  }
+
+
+  onTap(args: EventData) {
+    let button = args.object as Button;
+    // execute your custom logic here...
+    this.getCountries().subscribe((countries) => {
+      this.bindCountries(countries)
+    }, error => console.error(error))    
+  }
 }

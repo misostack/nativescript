@@ -1,8 +1,18 @@
 <ActionBar title="{{ title }}"></ActionBar> 
 <StackLayout>
+	<!-- <Image src="~/assets/images/logo.png"></Image> -->
 	<Label text="{{ description }}" textWrap="true"></Label>
 	<HtmlVIew [html]="htmlString"></HtmlVIew>
 	<TextField hint="Enter text"></TextField>
 	<TextView hint="equal textarea in html"></TextView>
-	<Button class="-primary" text="Primary Button"></Button>	
+	<Button (tap)="onTap($event)" class="-primary" text="Primary Button"></Button>	
+	<ScrollView height="150">
+	    <StackLayout>
+	        <ListView height="150" [items]="countries">
+	            <ng-template let-country="item" let-i="index" let-odd="odd" let-even="even">
+	    					<Label  text="{{ country.name }}" textWrap="true"></Label>            
+	            </ng-template>
+	        </ListView>
+	    </StackLayout>
+	</ScrollView>		
 </StackLayout>
