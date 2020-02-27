@@ -2,7 +2,7 @@
 <ScrollView>
 	<StackLayout>
 		<Button (tap)="onTap($event)" text="Take Photo"></Button>
-		<Image *ngIf="imageUri.length > 0" src="{{imageUri}}"></Image>
+		<Image #fingerImage width="250" height="250"></Image>
 		<Label text="{{ description }}" textWrap="true"></Label>
 		<HtmlVIew [html]="htmlString"></HtmlVIew>
 		<TextField hint="Enter text"></TextField>

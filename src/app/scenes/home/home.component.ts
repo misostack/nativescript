@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { EventData } from "tns-core-modules/data/observable";
 import { Button } from "tns-core-modules/ui/button";
+
+// capture photo
+import * as camera from "nativescript-camera";
+import { Image } from "tns-core-modules/ui/image";
+import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/image-source";
 
 const SLIDES = [
 	{
@@ -25,13 +30,14 @@ const SLIDES = [
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  @ViewChild("fingerImage", {static: false}) fingerImageRef: ElementRef;
 
 	title: string
 	description: string
 	htmlString: string
 	slides: Array<{}>
   countries: Array<{name: string, code: string}>
-  imageUri: string
+  imageUri: any
 
   constructor(
     private http: HttpClient
@@ -75,9 +81,41 @@ export class HomeComponent implements OnInit {
   }
 
 
+
+  takePicture() {
+    var options = {width: 1280, keepAspectRatio: true, saveToGallery: false};
+    camera.takePicture(options)
+    .then(imageAsset => {
+        const source = new ImageSource();
+        console.log("Result is an image asset instance", imageAsset);
+        source.fromAsset(imageAsset).then(source => {
+          let fingerImage = <Image>this.fingerImageRef.nativeElement;
+          fingerImage.imageSource = source;          
+        })
+    }).catch(function (err) {
+        console.log("Error -> " + err.message);
+    });
+  }
+
+
   onTap(args: EventData) {
     let button = args.object as Button;
-    this.imageUri = "~/assets/images/logo.png"
+    // this.imageUri = "~/assets/images/logo.png"
+    camera.requestCameraPermissions().then(success => {
+      console.log(success)
+      if(success){        
+        this.takePicture()
+      }
+    }).catch(err => {
+      console.error(err)
+    })
+    // camera.takePicture()
+    // .then(function (imageAsset) {
+    //     console.log("Result is an image asset instance", imageAsset);
+    //     this.imageUri = imageAsset
+    // }).catch(function (err) {
+    //     console.log("Error -> " + err.message);
+    // });    
     // execute your custom logic here...
     // this.getCountries().subscribe((countries) => {
     //   this.bindCountries(countries)      
