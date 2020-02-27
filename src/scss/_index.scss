@@ -1,0 +1,14 @@
+// {N} variables which are used by core theme + our own
+@import "variables";
+
+// {N} mixins which are used by core theme + our own
+@import "mixins";
+
+// {N} core theme rulesets (mix/match these to use what you want/need)
+@import "~@nativescript/theme/core.compat";
+@import "~@nativescript/theme/default.compat";
+
+// app customizations
+@import "fonts";
+@import "action-bar";
+@import "buttons";

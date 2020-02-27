@@ -1,1 +1,8 @@
-<Button text="home works!" class="btn btn-primary"></Button>
+<ActionBar title="{{ title }}"></ActionBar> 
+<StackLayout>
+	<Label text="{{ description }}" textWrap="true"></Label>
+	<HtmlVIew [html]="htmlString"></HtmlVIew>
+	<TextField hint="Enter text"></TextField>
+	<TextView hint="equal textarea in html"></TextView>
+	<Button class="-primary" text="Primary Button"></Button>	
+</StackLayout>
