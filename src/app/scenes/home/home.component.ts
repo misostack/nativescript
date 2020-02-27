@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
 	htmlString: string
 	slides: Array<{}>
   countries: Array<{name: string, code: string}>
+  imageUri: string
 
   constructor(
     private http: HttpClient
@@ -76,9 +77,10 @@ export class HomeComponent implements OnInit {
 
   onTap(args: EventData) {
     let button = args.object as Button;
+    this.imageUri = "~/assets/images/logo.png"
     // execute your custom logic here...
-    this.getCountries().subscribe((countries) => {
-      this.bindCountries(countries)
-    }, error => console.error(error))    
+    // this.getCountries().subscribe((countries) => {
+    //   this.bindCountries(countries)      
+    // }, error => console.error(error))
   }
 }

@@ -1,12 +1,12 @@
 <ActionBar title="{{ title }}"></ActionBar> 
 <ScrollView>
 	<StackLayout>
-		<Image src="~/assets/images/logo.png"></Image>
+		<Button (tap)="onTap($event)" text="Take Photo"></Button>
+		<Image *ngIf="imageUri.length > 0" src="{{imageUri}}"></Image>
 		<Label text="{{ description }}" textWrap="true"></Label>
 		<HtmlVIew [html]="htmlString"></HtmlVIew>
 		<TextField hint="Enter text"></TextField>
-		<TextView hint="equal textarea in html"></TextView>
-		<Button (tap)="onTap($event)" class="-primary" text="Primary Button"></Button>
+		<TextView hint="equal textarea in html"></TextView>		
 		<StackLayout *ngFor="let country of countries">
 			<Label  text="{{ country.name }}" textWrap="true"></Label>
 		</StackLayout>
