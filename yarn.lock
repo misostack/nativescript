@@ -3058,6 +3058,11 @@ nativescript-angular@~8.21.0:
   dependencies:
     "@nativescript/angular" "8.21.0"
 
+nativescript-applozic-chat@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/nativescript-applozic-chat/-/nativescript-applozic-chat-1.4.0.tgz#2ae2d1a46424a4cadd6a0b7d5e39aa239d37e0ce"
+  integrity sha512-PDHuaBO23lEaqYF2TU2ToEtZI4PEHOJQLKG32t0unzXOx7y2nk28HyaygDD7C1gkfjtfcI10x4IaW9+USu4khw==
+
 nativescript-camera@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/nativescript-camera/-/nativescript-camera-4.5.0.tgz#92260208cb34e1df5760c66ad16725edf6fbfffd"

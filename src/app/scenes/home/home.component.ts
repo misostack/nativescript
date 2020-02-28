@@ -12,6 +12,8 @@ import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/
 
 import { environment } from '@environments/environment';
 
+import { ApplozicChat } from 'nativescript-applozic-chat';
+
 const SLIDES = [
 	{
 		title: 'Component',
@@ -57,7 +59,8 @@ export class HomeComponent implements OnInit {
   			<li>Android Runtimes: <strong>V8 VM</strong></li>
   			<li>IOS Runtimes: <strong>JavascriptCore VM</strong></li> 
   		</ul>
-  	`
+    `
+    console.log('ApplozicChat:',typeof(ApplozicChat))
   }
 
   private createRequestHeader() {
