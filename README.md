@@ -96,3 +96,14 @@ ng g c scenes/home
 From : https://thebojan.ninja/2015/04/08/high-cohesion-loose-coupling/
 
 - Another : https://www.tutorialspoint.com/sdlc/sdlc_rad_model.htm
+
+## ISSUES might get
+
+> 1.Error in tns build android: 'spawn gradle.bat ENOENT 
+> Ref : https://github.com/NativeScript/nativescript-cli/issues/1836 
+
+```bash
+tns platform remove android
+tns platform add android
+tns install
+```
