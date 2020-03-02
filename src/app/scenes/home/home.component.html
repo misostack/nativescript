@@ -1,6 +1,9 @@
 <ActionBar title="{{ title }}"></ActionBar> 
 <ScrollView>
 	<StackLayout>
+		<StackLayout>
+			<Label text="Connection State: {{connectionState}}"></Label>
+		</StackLayout>
 		<Button (tap)="onTap($event)" text="Take Photo" class="btn btn-primary"></Button>
 		<Image src="~/assets/images/logo.png" width="50" height="50"></Image>
 		<Image #fingerImage width="250" height="250"></Image>

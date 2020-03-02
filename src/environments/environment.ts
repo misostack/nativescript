@@ -5,7 +5,13 @@ import { environment as prodEnvironment } from './environment.prod';
 
 interface IEnvironment {
   production: boolean,
-  name: string
+  name: string,
+  pusher: {
+    app_id: string,
+    key: string,
+    secret: string,
+    cluster: string
+  }  
 }
 
 export const environment : IEnvironment = (() => {

@@ -12,6 +12,7 @@ import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/
 
 import { environment } from '@environments/environment';
 import { PusherService } from '~/app/services/pusher.service';
+import { delay } from 'rxjs/operators';
 
 const SLIDES = [
 	{
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit {
   countries: Array<{name: string, code: string}>
   imageUri: any
   logMessages: string
+  connectionState : string
 
   constructor(
     private http: HttpClient,
@@ -86,6 +88,20 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.log('Sample log')
+    this.chatService.onConnectionState().subscribe(connectionState => {
+      this.updateConnectionState(connectionState)      
+    })    
+    this.chatService.onNewMessage().pipe(delay(100)).subscribe(msg => {
+      this.onNewMessage(msg)
+    })
+  }
+
+  onNewMessage(msg : string) {
+    this.log('New Message:', msg)
+  }
+
+  updateConnectionState(state: string) {
+    this.connectionState = state
   }
 
   log(...messages: string[]){
