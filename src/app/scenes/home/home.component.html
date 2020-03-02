@@ -1,13 +1,14 @@
 <ActionBar title="{{ title }}"></ActionBar> 
 <ScrollView>
 	<StackLayout>
-		<Label *ngIf="isLogged" text="{{ isLogged }}" textWrap="true"></Label>
-		<nts-form-login [disabled]="isLogged"
-			[showToggle]="!isLogged"
+		<Label text="{{ isLogged }}" textWrap="true"></Label>
+		<nts-form-login *ngIf="!isLogged"
+			[showToggle]="true"
 			(onLogin)="onLogin($event)"
 		></nts-form-login>
 		<StackLayout>
-			<Button (tap)="onLogout($event)" text="Log Out"></Button>		
+			<Button *ngIf="isLogged"
+			(tap)="onLogout($event)" text="Log Out"></Button>		
 		</StackLayout>
 		<StackLayout>
 			<Label text="Debug" textWrap="true"></Label>

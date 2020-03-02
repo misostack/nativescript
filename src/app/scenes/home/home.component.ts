@@ -110,17 +110,15 @@ export class HomeComponent implements OnInit {
     this.countries = countries
   }
 
-  ngOnInit(): void {        
+  ngOnInit(): void {            
     this.isLoggedIn().then(isLogged => {
-      this.log('isLogged', JSON.stringify(isLogged))
-      this.updateIsLoggedStatus(isLogged)
-      this.log('isLoggedParam', JSON.stringify(this.isLogged))
-    }, error => console.log(error))
+      this.updateIsLoggedStatus(isLogged)      
+    }, error => console.log(error))    
   }
 
   updateIsLoggedStatus(status: boolean) {
     this.isLogged = status
-    this.cdr.detectChanges()
+    this.log('updateIsLoggedStatus:', JSON.stringify(status))
   }
 
   onClean() {
@@ -138,6 +136,7 @@ export class HomeComponent implements OnInit {
       }else{
         this.doLogin(formData)
         .then(success => {
+          console.log('doLoginSuccess', success)
           this.log(JSON.stringify(success))
           this.updateIsLoggedStatus(true)
         })
@@ -184,8 +183,9 @@ export class HomeComponent implements OnInit {
 
   isLoggedIn(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.applozicChat.isLoggedIn(isLogged => {
-        resolve(isLogged)
+      this.applozicChat.isLoggedIn((isLogged: string) => {
+        this.log('TypeOf(isLogged)', typeof(isLogged))
+        resolve(isLogged === 'true')
       }, error => reject(error))
     })
   }

@@ -9,7 +9,6 @@ import { environment } from '~/environments/environment'
 })
 export class FormLoginComponent implements OnInit {
 
-  @Input('showToggle') showToggle: Boolean;
   @Output('onLogin') onLogin = new EventEmitter<any>();
 
   loginForm = new FormGroup({
@@ -21,6 +20,7 @@ export class FormLoginComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
   onLoginHandle() {
