@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit {
 	slides: Array<{}>
   countries: Array<{name: string, code: string}>
   imageUri: any
+  logMessages: string
 
   constructor(
     private http: HttpClient
@@ -57,7 +58,8 @@ export class HomeComponent implements OnInit {
   			<li>Android Runtimes: <strong>V8 VM</strong></li>
   			<li>IOS Runtimes: <strong>JavascriptCore VM</strong></li> 
   		</ul>
-  	`
+    `
+    this.logMessages = ''
   }
 
   private createRequestHeader() {
@@ -81,21 +83,34 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.log('Sample log')
   }
 
+  log(...messages: string[]){
+    messages.forEach(m => this.logMessages += `${m} `)
+    this.logMessages += '\n'
+    console.log(messages)
+  }
 
+  onClearLogs(){
+    this.logMessages = ''
+  }
 
   takePicture() {
     var options = {width: 1280, keepAspectRatio: true, saveToGallery: false};
     camera.takePicture(options)
     .then(imageAsset => {
-        const source = new ImageSource();
-        console.log("Result is an image asset instance", imageAsset);
-        source.fromAsset(imageAsset).then(source => {
-          let fingerImage = <Image>this.fingerImageRef.nativeElement;
-          fingerImage.imageSource = source;          
-        })
+        this.log('ImageAsset is Ready!')
+        this.log('Options', JSON.stringify(imageAsset.options))
+        this.log('Android', imageAsset.android)
+        this.log('IOS:', imageAsset.ios)
+        console.log(imageAsset)
+        // const source = new ImageSource();
+        // console.log("Result is an image asset instance", imageAsset);
+        // source.fromAsset(imageAsset).then(source => {
+        //   let fingerImage = <Image>this.fingerImageRef.nativeElement;
+        //   fingerImage.imageSource = source;          
+        // })
     }).catch(function (err) {
         console.log("Error -> " + err.message);
     });
@@ -106,7 +121,7 @@ export class HomeComponent implements OnInit {
     let button = args.object as Button;
     // this.imageUri = "~/assets/images/logo.png"
     camera.requestCameraPermissions().then(success => {
-      console.log(success)
+      this.log(JSON.stringify(success))
       if(success){        
         this.takePicture()
       }
