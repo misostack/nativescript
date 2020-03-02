@@ -1,13 +1,25 @@
 <ActionBar title="{{ title }}"></ActionBar> 
 <ScrollView>
 	<StackLayout>
+		<Label *ngIf="isLogged" text="{{ isLogged }}" textWrap="true"></Label>
+		<nts-form-login [disabled]="isLogged"
+			[showToggle]="!isLogged"
+			(onLogin)="onLogin($event)"
+		></nts-form-login>
+		<StackLayout>
+			<Button (tap)="onLogout($event)" text="Log Out"></Button>		
+		</StackLayout>
+		<StackLayout>
+			<Label text="Debug" textWrap="true"></Label>
+			<Button (tap)="onClean()" text="Clean"></Button>
+			<TextView hint="equal textarea in html" text="{{ logs }}"></TextView>
+		</StackLayout>
 		<Button (tap)="onTap($event)" text="Take Photo"></Button>
 		<Image src="~/assets/images/logo.png" width="50" height="50"></Image>
 		<Image #fingerImage width="250" height="250"></Image>
 		<Label text="{{ description }}" textWrap="true"></Label>
 		<HtmlVIew [html]="htmlString"></HtmlVIew>
 		<TextField hint="Enter text"></TextField>
-		<TextView hint="equal textarea in html"></TextView>		
 		<StackLayout *ngFor="let country of countries">
 			<Label  text="{{ country.name }}" textWrap="true"></Label>
 		</StackLayout>

@@ -3,7 +3,17 @@ import { environment as localEnvironment } from './environment.local';
 import { environment as devEnvironment } from './environment.dev';
 import { environment as prodEnvironment } from './environment.prod';
 
-export const environment = (() => {
+interface IEnvironment {
+  production: boolean,
+  name: string,
+  appLozic: {
+    userId: string,
+    password: string,
+    applicationId: string,    
+  }
+}
+
+export const environment : IEnvironment = (() => {
   let envVars;
   //@ts-ignore
   const APP_ENV = global.APP_ENV

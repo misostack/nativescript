@@ -1,4 +1,5 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
+import { ReactiveFormsModule } from '@angular/forms';
 import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -9,10 +10,11 @@ import { HomeComponent } from './scenes/home/home.component';
 import { ExampleComponent } from './scenes/example/example.component';
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
-// import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
 
 // Uncomment and add to NgModule imports if you need to use the HttpClient wrapper
 import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
+import { FormLoginComponent } from './scenes/home/components/form-login/form-login.component';
 
 @NgModule({
     bootstrap: [
@@ -21,6 +23,8 @@ import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
     imports: [
         NativeScriptModule,
         NativeScriptHttpClientModule,
+        NativeScriptFormsModule,
+        ReactiveFormsModule,
         AppRoutingModule
     ],
     declarations: [
@@ -28,7 +32,8 @@ import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
         ItemsComponent,
         ItemDetailComponent,
         HomeComponent,
-        ExampleComponent
+        ExampleComponent,
+        FormLoginComponent
     ],
     providers: [],
     schemas: [

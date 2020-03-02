@@ -1,0 +1,10 @@
+<StackLayout>
+  <Label text="show ? {{ showToggle }}" textWrap="true"></Label>
+</StackLayout>
+<StackLayout [formGroup]="loginForm" *ngIf="showToggle">  
+  <Label text="Chat with Applozic" textWrap="true"></Label>
+  <TextField formControlName="userId"></TextField>
+  <TextField formControlName="password"></TextField>
+  <TextField formControlName="applicationId"></TextField>
+  <Button (tap)="onLoginHandle($event)" text="Log In"></Button>		
+</StackLayout>
