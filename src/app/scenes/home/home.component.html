@@ -1,12 +1,13 @@
 <ActionBar title="{{ title }}"></ActionBar> 
 <ScrollView>
 	<StackLayout>
-		<Button (tap)="onTap($event)" text="Take Photo"></Button>
+		<Button (tap)="onTap($event)" text="Take Photo" class="btn btn-primary"></Button>
 		<Image src="~/assets/images/logo.png" width="50" height="50"></Image>
 		<Image #fingerImage width="250" height="250"></Image>
 		<StackLayout>
 			<Label text="Logs" textWrap="true"></Label>
-			<TextView hint="logs" text="{{ logMessages}}"></TextView>
+			<Button (tap)="onClearLogs()" text="Clear" class="btn btn-primary"></Button>
+			<TextView hint="logs" text="{{ logMessages}}"></TextView>			
 		</StackLayout>
 		<Label text="{{ description }}" textWrap="true"></Label>
 		<HtmlVIew [html]="htmlString"></HtmlVIew>
