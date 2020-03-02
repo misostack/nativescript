@@ -10,7 +10,8 @@ interface IEnvironment {
     app_id: string,
     key: string,
     secret: string,
-    cluster: string
+    cluster: string,
+    global_channel : string,
   }  
 }
 

@@ -100,6 +100,14 @@ export class HomeComponent implements OnInit {
     this.log('New Message:', msg)
   }
 
+  onDisconnect() {
+    this.chatService.disConnect()
+  }
+
+  onConnect() {
+    this.chatService.connect()
+  }
+
   updateConnectionState(state: string) {
     this.connectionState = state
   }

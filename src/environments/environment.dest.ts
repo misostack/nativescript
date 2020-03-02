@@ -5,6 +5,7 @@ export const environment = {
     app_id: '',
     key: '',
     secret: "",
-    cluster: ""    
+    cluster: "",
+    global_channel : ''
   }
 };

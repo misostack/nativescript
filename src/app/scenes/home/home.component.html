@@ -3,6 +3,12 @@
 	<StackLayout>
 		<StackLayout>
 			<Label text="Connection State: {{connectionState}}"></Label>
+			<Button *ngIf="connectionState == 'connected'"
+			(tap)="onDisconnect()" 
+			text="Disconnect from Pusher" class="btn btn-primary"></Button>
+			<Button *ngIf="connectionState == 'disconnected'"
+			(tap)="onConnect()" 
+			text="Connect to Pusher" class="btn btn-primary"></Button>				
 		</StackLayout>
 		<Button (tap)="onTap($event)" text="Take Photo" class="btn btn-primary"></Button>
 		<Image src="~/assets/images/logo.png" width="50" height="50"></Image>

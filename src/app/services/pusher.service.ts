@@ -9,6 +9,7 @@ const CONNECTION_STATUS = {
   DISCONNECTED: 'disconnected'
 }
 
+const GLOBAL_CHANNEL = environment.pusher.global_channel
 @Injectable({
   providedIn: 'root'
 })
@@ -27,14 +28,17 @@ export class PusherService {
     const pusher_env = environment.pusher
     console.log('Connecting Pusher', pusher_env)
     setTimeout(() => {
-      this.__subscribeToChannel('global')
+      this.__subscribeToChannel(GLOBAL_CHANNEL)
       this._connectionState$.next(CONNECTION_STATUS.CONNECTED)
     }, 2000)
     
   }
 
-  private __disconnected(){
-    this._connectionState$.next(CONNECTION_STATUS.DISCONNECTED)
+  private __disconnect(){
+    setTimeout(() => {
+      this.__unsubscribeToChannel(GLOBAL_CHANNEL)
+      this._connectionState$.next(CONNECTION_STATUS.DISCONNECTED)
+    }, 2000)        
   }
 
   private __newMessage(msg){
@@ -43,9 +47,13 @@ export class PusherService {
 
   private __subscribeToChannel(channelName) {
     console.log(`Subscribe to Channel ${channelName}`)
-    setInterval(() => {
-      this._newMessage$.next(`A new message at ${Date.now().toString()}`)
-    }, 5000)
+    // setInterval(() => {
+    //   this._newMessage$.next(`A new message at ${Date.now().toString()}`)
+    // }, 5000)
+  }
+
+  private __unsubscribeToChannel(channelName) {
+    console.log(`Unsubscribe to Channel ${channelName}`)
   }
 
   public onNewMessage() : Observable<string>{
@@ -54,5 +62,16 @@ export class PusherService {
 
   public onConnectionState(): Observable<string>{
     return this._connectionState$.asObservable().pipe(delay(100))
+  }
+
+  public disConnect() {
+    console.log('disconnecting')
+    setTimeout(() => {
+      this.__disconnect()
+    }, 2000)
+  }
+
+  public connect() {
+    this.__connect()
   }
 }
