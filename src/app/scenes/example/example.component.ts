@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PusherService } from '~/app/services/pusher.service';
 
 @Component({
   selector: 'nts-example',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExampleComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private chatService: PusherService
+  ) { }
 
   ngOnInit(): void {
   }

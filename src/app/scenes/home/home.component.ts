@@ -11,6 +11,7 @@ import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/
 // sample env
 
 import { environment } from '@environments/environment';
+import { PusherService } from '~/app/services/pusher.service';
 
 const SLIDES = [
 	{
@@ -45,7 +46,8 @@ export class HomeComponent implements OnInit {
   logMessages: string
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private chatService: PusherService
     ) {
   	// initial default value
   	this.title = 'NativeScript App - ' + environment.name
