@@ -15,6 +15,7 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
 import { ReactiveFormsModule } from "@angular/forms";
 import { PusherService } from "./services/pusher.service";
+import { MessagesComponent } from './scenes/home/components/messages/messages.component';
 
 @NgModule({
     bootstrap: [
@@ -32,7 +33,8 @@ import { PusherService } from "./services/pusher.service";
         ItemsComponent,
         ItemDetailComponent,
         HomeComponent,
-        ExampleComponent
+        ExampleComponent,
+        MessagesComponent
     ],
     providers: [
         PusherService

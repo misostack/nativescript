@@ -12,11 +12,12 @@
 		</StackLayout>
 		<Button (tap)="onTap($event)" text="Take Photo" class="btn btn-primary"></Button>
 		<Image src="~/assets/images/logo.png" width="50" height="50"></Image>
-		<Image #fingerImage width="250" height="250"></Image>
+		<!-- <Image #fingerImage width="250" height="250"></Image> -->
 		<StackLayout>
+			<Label text="{{ newMessage$ | async }}"></Label>
 			<Label text="Logs" textWrap="true"></Label>
 			<Button (tap)="onClearLogs()" text="Clear" class="btn btn-primary"></Button>
-			<TextView hint="logs" text="{{ logMessages}}"></TextView>			
+			<nts-messages *ngIf="newMessage$ | async" [messages]="logMessages"></nts-messages>
 		</StackLayout>
 		<nts-example></nts-example>
 		<Label text="{{ description }}" textWrap="true"></Label>

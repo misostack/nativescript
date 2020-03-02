@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { EventData } from "tns-core-modules/data/observable";
 import { Button } from "tns-core-modules/ui/button";
@@ -13,6 +13,7 @@ import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/
 import { environment } from '@environments/environment';
 import { PusherService } from '~/app/services/pusher.service';
 import { delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 const SLIDES = [
 	{
@@ -44,12 +45,14 @@ export class HomeComponent implements OnInit {
 	slides: Array<{}>
   countries: Array<{name: string, code: string}>
   imageUri: any
-  logMessages: string
+  logMessages: Array<string> = []
   connectionState : string
+  newMessage$: Observable<string>
 
   constructor(
     private http: HttpClient,
-    private chatService: PusherService
+    private chatService: PusherService,
+    private cdr: ChangeDetectorRef
     ) {
   	// initial default value
   	this.title = 'NativeScript App - ' + environment.name
@@ -63,7 +66,7 @@ export class HomeComponent implements OnInit {
   			<li>IOS Runtimes: <strong>JavascriptCore VM</strong></li> 
   		</ul>
     `
-    this.logMessages = ''
+    this.logMessages = []
   }
 
   private createRequestHeader() {
@@ -91,12 +94,14 @@ export class HomeComponent implements OnInit {
     this.chatService.onConnectionState().subscribe(connectionState => {
       this.updateConnectionState(connectionState)      
     })    
-    this.chatService.onNewMessage().pipe(delay(100)).subscribe(msg => {
+    this.newMessage$ = this.chatService.onNewMessage()
+    this.newMessage$.pipe(delay(100)).subscribe(msg => {
       this.onNewMessage(msg)
     })
   }
 
   onNewMessage(msg : string) {
+    
     this.log('New Message:', msg)
   }
 
@@ -113,13 +118,14 @@ export class HomeComponent implements OnInit {
   }
 
   log(...messages: string[]){
-    messages.forEach(m => this.logMessages += `${m} `)
-    this.logMessages += '\n'
+    messages.forEach(m => this.logMessages.push(m))
+    console.log(this.logMessages.length)    
     console.log(messages)
+    
   }
 
   onClearLogs(){
-    this.logMessages = ''
+    this.logMessages = []
   }
 
   takePicture() {

@@ -1,0 +1,7 @@
+<StackLayout *ngIf="(messages.length > 0)">
+  <Button text="messages works!" class="btn btn-primary"></Button>
+  <Label text="{{messages.length}}"></Label>
+  <StackLayout *ngFor="let message of messages">
+    <Label text="{{ message }}" textWrap="true"></Label>  
+  </StackLayout>
+</StackLayout>

@@ -6,13 +6,16 @@ import { environment as prodEnvironment } from './environment.prod';
 interface IEnvironment {
   production: boolean,
   name: string,
-  pusher: {
-    app_id: string,
-    key: string,
-    secret: string,
-    cluster: string,
-    global_channel : string,
-  }  
+  PUSHER: {
+    API_KEY: string,
+    OPTIONS: {
+      cluster: string,
+      forceTLS: boolean	
+    },
+    GLOBAL_CHANNEL: string,
+    GLOBAL_EVENTS: Array<string>,
+    DEFAULT_EVENT: string
+  } 
 }
 
 export const environment : IEnvironment = (() => {

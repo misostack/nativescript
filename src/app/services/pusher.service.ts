@@ -1,59 +1,92 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 
 import { environment } from '~/environments/environment'
 import { BehaviorSubject, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { Pusher } from 'nativescript-pusher';
 
 const CONNECTION_STATUS = {
   CONNECTED: 'connected',
   DISCONNECTED: 'disconnected'
 }
+const PUSHER_ENV = environment.PUSHER
 
-const GLOBAL_CHANNEL = environment.pusher.global_channel
 @Injectable({
   providedIn: 'root'
 })
 export class PusherService {
 
+  private _pusher: Pusher = null
+
   private _connectionState$: BehaviorSubject<string> = new BehaviorSubject(CONNECTION_STATUS.DISCONNECTED)  
   private _newMessage$: BehaviorSubject<string> = new BehaviorSubject("") 
 
   constructor(    
+    private ngZone: NgZone
   ) {
     console.log('PusherService Init')
     this.__connect()
   }
 
-  private __connect(){
-    const pusher_env = environment.pusher
-    console.log('Connecting Pusher', pusher_env)
-    setTimeout(() => {
-      this.__subscribeToChannel(GLOBAL_CHANNEL)
-      this._connectionState$.next(CONNECTION_STATUS.CONNECTED)
-    }, 2000)
+  private __connect(){    
+    console.log('Connecting Pusher', PUSHER_ENV)
+    
+    if(this._pusher == null){
+      this._pusher = new Pusher(
+        PUSHER_ENV.API_KEY,
+        PUSHER_ENV.OPTIONS
+      )
+      this.__subscribeToChannel(PUSHER_ENV.GLOBAL_CHANNEL, PUSHER_ENV.GLOBAL_EVENTS)
+    }   
+    this._pusher.connect((state) => {
+      // no errors
+      console.log(state)
+      if(state === null){        
+        this._connectionState$.next(CONNECTION_STATUS.CONNECTED)        
+      }else{
+        this.__newMessage(`Error when connection: ${state}`)
+      }
+    })
     
   }
 
   private __disconnect(){
-    setTimeout(() => {
-      this.__unsubscribeToChannel(GLOBAL_CHANNEL)
-      this._connectionState$.next(CONNECTION_STATUS.DISCONNECTED)
-    }, 2000)        
+    // this.__unsubscribeToChannel(PUSHER_ENV.GLOBAL_CHANNEL)
+    try {
+      this._pusher.disconnect()
+      setTimeout(() => {      
+        this._connectionState$.next(CONNECTION_STATUS.DISCONNECTED)
+      }, 2000)            
+    } catch (error) {
+      this.__newMessage(`Error when disconnecting: ${JSON.stringify(error)}`)
+    }  
   }
 
   private __newMessage(msg){
-    this._newMessage$.next(msg)
+    const now = Date.now().toLocaleString()
+    this._newMessage$.next(`${now}: ${msg}`)
   }
 
-  private __subscribeToChannel(channelName) {
-    console.log(`Subscribe to Channel ${channelName}`)
+  private __subscribeToChannel(channelName, events = [PUSHER_ENV.DEFAULT_EVENT]) {
+    events.map(event => {      
+      this.__newMessage(`Subscribe to ${channelName} - ${event} !`)
+      this._pusher.subscribeToChannelEvent(channelName, event, (error, data) => {
+        this.ngZone.run(() => {
+          if(error != null){
+            this.__newMessage(`Error when subcribed: ${JSON.stringify(error)}`)
+          }else{
+            this.__newMessage(JSON.stringify(data))
+          }
+        })        
+      })
+    })
     // setInterval(() => {
-    //   this._newMessage$.next(`A new message at ${Date.now().toString()}`)
+    //   this.__newMessage(`A new message at ${Date.now().toLocaleString()}`)
     // }, 5000)
   }
 
-  private __unsubscribeToChannel(channelName) {
-    console.log(`Unsubscribe to Channel ${channelName}`)
+  private __unsubscribeToChannel(channelName, events = [PUSHER_ENV.DEFAULT_EVENT]) {
+    console.log(`Unsubscribe to Channel ${channelName} - Events : ${events}`)
   }
 
   public onNewMessage() : Observable<string>{
