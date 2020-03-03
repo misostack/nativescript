@@ -5,8 +5,8 @@ import { isAndroid, isIOS } from "tns-core-modules/platform";
 
 // capture photo
 import * as camera from "nativescript-camera";
-// import { Image } from "tns-core-modules/ui/image";
-// import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/image-source";
+import { Image } from "tns-core-modules/ui/image";
+import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/image-source";
 
 // sample env
 
@@ -148,7 +148,29 @@ export class HomeComponent implements OnInit {
   }
 
   onTakePhoto(){
-
+    const options : camera.CameraOptions = {
+      width: 250,
+      height: 250,
+      keepAspectRatio: true,      
+      saveToGallery: false,
+      allowsEditing: false,  
+      /**
+       * The initial camera. Default "rear".
+       * The current implementation doesn't work on all Android devices, in which case it falls back to the default behavior.
+       */
+      // cameraFacing: "front" | "rear"      
+    }
+    camera.takePicture(options).then(
+      imageAsset => {
+            const source = new ImageSource();
+            console.log("Result is an image asset instance", imageAsset);
+            source.fromAsset(imageAsset).then(source => {
+               let fingerImage = <Image>this.fingerImageRef.nativeElement;
+               fingerImage.imageSource = source;          
+            })
+      }
+      ).then( err => console.log(err))  
+    return;
     if(this.cameraStatus) {
       // take picture
       this._ngZOne.runOutsideAngular(() => {

@@ -12,10 +12,10 @@
 		</StackLayout>
 		<Label text="{{ cameraStatus === true ? 'Camera:Enabled' : 'Camera:Disabled'}}"></Label>
 		<Button *ngIf="cameraStatus === false" (tap)="onRequestPermission()" text="Request Camera Permission" class="btn btn-primary"></Button>
-		<Button *ngIf="cameraStatus === true" (tap)="onTakePhoto()" text="Take Photo" class="btn btn-primary"></Button>
+		<Button *ngIf="cameraStatus === true" (tap)="onTakePhoto()" text="Take Photo 1" class="btn btn-primary"></Button>
 		<Label text="{{'Image Asset:' + imageAsset}}"></Label>
 		<Image src="~/assets/images/logo.png" width="50" height="50"></Image>
-		<!-- <Image #fingerImage width="250" height="250"></Image> -->
+		<Image #fingerImage width="250" height="250"></Image>
 		<StackLayout>
 			<Label text="{{ newMessage$ | async }}"></Label>
 			<Label text="Logs" textWrap="true"></Label>
