@@ -1,11 +1,11 @@
 {
   "nativescript": {
-    "id": "org.nativescript.nativescript",
+    "id": "com.sonnm.nativescript.headfirst001",
     "tns-android": {
       "version": "6.4.1"
     },
     "tns-ios": {
-      "version": "6.4.0"
+      "version": "6.4.2"
     }
   },
   "description": "NativeScript Application",
@@ -39,5 +39,6 @@
     "typescript": "~3.5.3"
   },
   "gitHead": "d8bdf0799a219051f28f8abd7c258d2bf2fce6e1",
-  "readme": "NativeScript Application"
+  "readme": "NativeScript Application",
+  "author": "techlead@sonnm.com"
 }
