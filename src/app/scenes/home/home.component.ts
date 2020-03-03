@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { EventData } from "tns-core-modules/data/observable";
-import { Button } from "tns-core-modules/ui/button";
+import { isAndroid, isIOS } from "tns-core-modules/platform";
+
 
 // capture photo
 import * as camera from "nativescript-camera";
-import { Image } from "tns-core-modules/ui/image";
-import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/image-source";
+// import { Image } from "tns-core-modules/ui/image";
+// import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/image-source";
 
 // sample env
 
@@ -14,6 +14,7 @@ import { environment } from '@environments/environment';
 import { PusherService } from '~/app/services/pusher.service';
 import { delay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 
 const SLIDES = [
 	{
@@ -49,10 +50,13 @@ export class HomeComponent implements OnInit {
   connectionState : string
   newMessage$: Observable<string>
 
+  cameraStatus : Boolean = false
+  imageAsset: string = ''
+
   constructor(
     private http: HttpClient,
     private chatService: PusherService,
-    private cdr: ChangeDetectorRef
+    private _ngZOne: NgZone
     ) {
   	// initial default value
   	this.title = 'NativeScript App - ' + environment.name
@@ -98,6 +102,7 @@ export class HomeComponent implements OnInit {
     this.newMessage$.pipe(delay(100)).subscribe(msg => {
       this.onNewMessage(msg)
     })
+    this.onRequestPermission()
   }
 
   onNewMessage(msg : string) {
@@ -128,48 +133,75 @@ export class HomeComponent implements OnInit {
     this.logMessages = []
   }
 
-  takePicture() {
-    var options = {width: 1280, keepAspectRatio: true, saveToGallery: false};
-    camera.takePicture(options)
-    .then(imageAsset => {
-        this.log('ImageAsset is Ready!')
-        this.log('Options', JSON.stringify(imageAsset.options))
-        this.log('Android', imageAsset.android)
-        this.log('IOS:', imageAsset.ios)
-        console.log(imageAsset)
-        // const source = new ImageSource();
-        // console.log("Result is an image asset instance", imageAsset);
-        // source.fromAsset(imageAsset).then(source => {
-        //   let fingerImage = <Image>this.fingerImageRef.nativeElement;
-        //   fingerImage.imageSource = source;          
-        // })
-    }).catch(function (err) {
-        console.log("Error -> " + err.message);
-    });
+  onRequestPermission() {
+    this._ngZOne.runOutsideAngular(() => {
+      this.requestPermission((success) => {
+        this._ngZOne.run(() => {
+          this.log(success)
+          this.cameraStatus = camera.isAvailable()
+        })
+      }, (error) => {
+        this.log(error)
+        this.cameraStatus = camera.isAvailable()
+      })
+    })
   }
 
+  onTakePhoto(){
 
-  onTap(args: EventData) {
-    let button = args.object as Button;
-    // this.imageUri = "~/assets/images/logo.png"
-    camera.requestCameraPermissions().then(success => {
-      this.log(JSON.stringify(success))
-      if(success){        
-        this.takePicture()
-      }
-    }).catch(err => {
-      console.error(err)
-    })
-    // camera.takePicture()
-    // .then(function (imageAsset) {
-    //     console.log("Result is an image asset instance", imageAsset);
-    //     this.imageUri = imageAsset
-    // }).catch(function (err) {
-    //     console.log("Error -> " + err.message);
-    // });    
-    // execute your custom logic here...
-    // this.getCountries().subscribe((countries) => {
-    //   this.bindCountries(countries)      
-    // }, error => console.error(error))
+    if(this.cameraStatus) {
+      // take picture
+      this._ngZOne.runOutsideAngular(() => {
+        this.takePhoto((imageAsset) => {
+          this._ngZOne.run(() => {
+            console.log(imageAsset)
+            this.log('ImageAsset is Ready!')
+            this.log('Options', JSON.stringify(imageAsset.options))
+            this.log('Android', imageAsset.android ? imageAsset.android : '')
+            this.log('IOS:', imageAsset.ios ? imageAsset.ios : '')            
+            if(isAndroid){
+              this.imageAsset = imageAsset.android
+            }else if(isIOS){
+              this.imageAsset = imageAsset.ios
+            }
+            // const source = new ImageSource();
+            // console.log("Result is an image asset instance", imageAsset);
+            // source.fromAsset(imageAsset).then(source => {
+            //   let fingerImage = <Image>this.fingerImageRef.nativeElement;
+            //   fingerImage.imageSource = source;          
+            // })            
+          })
+        }, (error) => {
+          this.log(JSON.stringify(error.message))
+          this.imageAsset = JSON.stringify(error.message)
+        })
+      })
+    }
+  }
+
+  //
+
+  requestPermission(successCallBack: (data) => void, errorCallBack: (err) => void) {
+    camera.requestPermissions().then(
+      success => successCallBack(success)
+    ).then( err => errorCallBack(err))
+  }
+
+  takePhoto(successCallBack: (data) => void, errorCallBack: (err) => void){
+    const options : camera.CameraOptions = {
+      width: 250,
+      height: 250,
+      keepAspectRatio: true,      
+      saveToGallery: false,
+      allowsEditing: false,  
+      /**
+       * The initial camera. Default "rear".
+       * The current implementation doesn't work on all Android devices, in which case it falls back to the default behavior.
+       */
+      // cameraFacing: "front" | "rear"      
+    }
+    camera.takePicture(options).then(
+      success => successCallBack(success)
+      ).then( err => errorCallBack(err))
   }
 }

@@ -25,7 +25,7 @@ export class PusherService {
     private ngZone: NgZone
   ) {
     console.log('PusherService Init')
-    this.__connect()
+    // this.__connect()
   }
 
   private __connect(){    
