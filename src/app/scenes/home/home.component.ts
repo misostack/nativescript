@@ -171,34 +171,6 @@ export class HomeComponent implements OnInit {
       }
       ).then( err => console.log(err))  
     return;
-    if(this.cameraStatus) {
-      // take picture
-      this._ngZOne.runOutsideAngular(() => {
-        this.takePhoto((imageAsset) => {
-          this._ngZOne.run(() => {
-            console.log(imageAsset)
-            this.log('ImageAsset is Ready!')
-            this.log('Options', JSON.stringify(imageAsset.options))
-            this.log('Android', imageAsset.android ? imageAsset.android : '')
-            this.log('IOS:', imageAsset.ios ? imageAsset.ios : '')            
-            if(isAndroid){
-              this.imageAsset = imageAsset.android
-            }else if(isIOS){
-              this.imageAsset = imageAsset.ios
-            }
-            // const source = new ImageSource();
-            // console.log("Result is an image asset instance", imageAsset);
-            // source.fromAsset(imageAsset).then(source => {
-            //   let fingerImage = <Image>this.fingerImageRef.nativeElement;
-            //   fingerImage.imageSource = source;          
-            // })            
-          })
-        }, (error) => {
-          this.log(JSON.stringify(error.message))
-          this.imageAsset = JSON.stringify(error.message)
-        })
-      })
-    }
   }
 
   //
