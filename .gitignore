@@ -39,6 +39,7 @@ src/environments/*
 keys/*
 
 App_Resources/Android/google-services.json
+App_Resources/iOS/GoogleService-Info.plist
 firebase.nativescript.json
 yarn.lock
 yarn.lock.tmp
