@@ -12,7 +12,8 @@ export class AppComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       await firebase.init({
-        persist: false
+        persist: false,
+        analyticsCollectionEnabled: true,
       });
       console.log(">>>>> Firebase initialized");
     } catch (err) {

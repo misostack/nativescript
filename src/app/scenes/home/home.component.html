@@ -1,17 +1,28 @@
 <ActionBar title="{{ title }}"></ActionBar> 
 <ScrollView>
 	<StackLayout>
-		<StackLayout>
-			<Label text="{{ user$ | async | json }}"></Label>
+		<StackLayout *ngIf="user$ | async as user">
+			<Label text="UID: {{ user.uid}}"></Label>
+			<Label text="Email: {{ user.email}}"></Label>
 		</StackLayout>
-		<StackLayout>			
-			<Button *ngIf="user$ | async as user"
+		<StackLayout *ngIf="user !== null"> 			
+			<Button 
 			(tap)="onLogout()" 
 			text="Logout from Firebase" class="btn btn-primary"></Button>
+			<Button 
+			(tap)="fetchChatMessages()" 
+			text="Load Message" class="btn btn-primary"></Button>							
+		</StackLayout>
+		<StackLayout *ngIf="user == null">
 			<Button
 			(tap)="onLogin()" 
-			text="Login To Firebase" class="btn btn-primary"></Button>				
-		</StackLayout>		
+			text="Login To Firebase" class="btn btn-primary"></Button>
+		</StackLayout>
+		<StackLayout *ngFor="let m of messages$ | async"> 
+			<Label text="UID:{{m.uid}}"></Label>
+			<Label text="Message:{{m.message}}"></Label>
+			<Label text="Timestamp{{m.timestamp}}"></Label>
+		</StackLayout>
 		<Label text="{{ cameraStatus === true ? 'Camera:Enabled' : 'Camera:Disabled'}}"></Label>
 		<Button *ngIf="cameraStatus === false" (tap)="onRequestPermission()" text="Request Camera Permission" class="btn btn-primary"></Button>
 		<Button *ngIf="cameraStatus === true" (tap)="onTakePhoto()" text="Take Photo 1" class="btn btn-primary"></Button>

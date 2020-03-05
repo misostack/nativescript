@@ -52,9 +52,12 @@ export class HomeComponent implements OnInit {
   newMessage$: Observable<string>
   userSubject$: BehaviorSubject<firebase.User> = new BehaviorSubject(null);
   user$: Observable<firebase.User>;
+  messagesSubject$: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  messages$: Observable<Array<{uid:string, message: string, timestamp:number}>>;
 
   cameraStatus : Boolean = false
   imageAsset: string = ''
+  user: firebase.User = null
 
   constructor(
     private http: HttpClient,
@@ -98,6 +101,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.user$ = this.userSubject$.asObservable();
+    this.user$.subscribe( u => this.user = u)
+    this.messages$ = this.messagesSubject$.asObservable()
     this.log('Sample log')
     this.chatService.onConnectionState().subscribe(connectionState => {
       this.updateConnectionState(connectionState)      
@@ -135,6 +140,36 @@ export class HomeComponent implements OnInit {
   onNewMessage(msg : string) {
     
     this.log('New Message:', msg)
+  }
+
+  onQueryEvent = (result) => {
+    if (!result.error) {
+      console.log("Event type: " + result.type);
+      console.log("Key: " + result.key);
+      console.log("Value: " + JSON.stringify(result.value)); // a JSON object
+      console.log("Children: " + JSON.stringify(result.children)); // an array, added in plugin v 8.0.0
+      this.messagesSubject$.next(result.value.filter(m => m!==null))
+    }    
+  }
+
+  fetchChatMessages = () => {
+    this._ngZOne.runOutsideAngular(() => {
+      firebase.query(
+        (data => {
+          this._ngZOne.run(() => {
+            console.log(data)
+            this.onQueryEvent(data) 
+          })
+        }),
+        '/messages',
+        {
+          singleEvent: false,
+          orderBy: {
+            type: firebase.QueryOrderByType.KEY          
+          },        
+        }
+      )
+    })
   }
 
   onDisconnect() {
