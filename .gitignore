@@ -40,3 +40,5 @@ keys/*
 
 App_Resources/Android/google-services.json
 firebase.nativescript.json
+yarn.lock
+yarn.lock.tmp
