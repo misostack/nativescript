@@ -16,6 +16,7 @@ import { PusherService } from '~/app/services/pusher.service';
 import { delay } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
+import { FormGroup, FormControl } from '@angular/forms';
 
 const SLIDES = [
 	{
@@ -54,10 +55,14 @@ export class HomeComponent implements OnInit {
   user$: Observable<firebase.User>;
   messagesSubject$: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   messages$: Observable<Array<{uid:string, message: string, timestamp:number}>>;
+  messages: Array<{uid:string, message: string, timestamp:number}> = []
 
   cameraStatus : Boolean = false
   imageAsset: string = ''
   user: firebase.User = null
+  chatForm: FormGroup = new FormGroup({
+    message: new FormControl('message')
+  })
 
   constructor(
     private http: HttpClient,
@@ -137,9 +142,36 @@ export class HomeComponent implements OnInit {
       .catch(error => console.log(error));    
   }
 
+  prepareMessage = (message: string) => {
+    return {
+      uid: this.user.uid,
+      message: message,
+      timestamp: Date.now() * 1000 // milliseconds
+    }
+  }
+
+  onSendMessage = () => {    
+    const { message } = this.chatForm.value
+    const messagePayload = this.prepareMessage(message)
+    console.log('SEND MESSAGE', messagePayload)
+    firebase.push('messages', messagePayload)
+    .then( res => console.log(res.key, res))
+  }
+
   onNewMessage(msg : string) {
     
     this.log('New Message:', msg)
+  }
+
+  newMessages = (messages, concat = false) => {
+    if(concat){
+      this.messages = [...this.messages, ...messages]
+    }else{
+      this.messages = messages
+    }
+    // sort message
+    this.messages.sort((a,b) => b.timestamp - a.timestamp)
+    this.messagesSubject$.next(this.messages)
   }
 
   onQueryEvent = (result) => {
@@ -148,7 +180,13 @@ export class HomeComponent implements OnInit {
       console.log("Key: " + result.key);
       console.log("Value: " + JSON.stringify(result.value)); // a JSON object
       console.log("Children: " + JSON.stringify(result.children)); // an array, added in plugin v 8.0.0
-      this.messagesSubject$.next(result.value.filter(m => m!==null))
+      if(result.type == 'ChildAdded'){
+        if(Array.isArray(result.value)){
+          this.newMessages(result.value.filter(m => m!==null))
+        }else{
+          this.newMessages([result.value], true)
+        }
+      }
     }    
   }
 
@@ -165,7 +203,8 @@ export class HomeComponent implements OnInit {
         {
           singleEvent: false,
           orderBy: {
-            type: firebase.QueryOrderByType.KEY          
+            type: firebase.QueryOrderByType.CHILD,
+            value: 'timestamp'          
           },        
         }
       )

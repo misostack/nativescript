@@ -12,6 +12,13 @@
 			<Button 
 			(tap)="fetchChatMessages()" 
 			text="Load Message" class="btn btn-primary"></Button>							
+
+			<StackLayout [formGroup]="chatForm" (ngSubmit)="onSendMessage()">
+				<TextField hint="Enter message" formControlName="message"
+				(returnPress)="onSendMessage()"
+				></TextField>
+				<Button (tap)="onSendMessage()" text="Send Message"></Button>
+			</StackLayout>
 		</StackLayout>
 		<StackLayout *ngIf="user == null">
 			<Button
