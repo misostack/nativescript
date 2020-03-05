@@ -4,7 +4,6 @@ import { platformNativeScriptDynamic } from "nativescript-angular/platform";
 // https://stackoverflow.com/questions/57181909/how-to-prevent-system-font-size-changing-effects-to-nativescript-angular-android
 import { isAndroid } from 'tns-core-modules/platform';
 import { TextBase } from 'tns-core-modules/ui/text-base/text-base';
-
 import { AppModule } from "./app/app.module";
 
 declare var android; // required if tns-platform-declarations is not installed

@@ -1,11 +1,11 @@
 {
   "nativescript": {
-    "id": "com.sonnm.nativescript.headfirst001",
-    "tns-android": {
-      "version": "6.4.1"
-    },
+    "id": "com.sonnm.nativescript",
     "tns-ios": {
       "version": "6.4.2"
+    },
+    "tns-android": {
+      "version": "6.4.1"
     }
   },
   "description": "NativeScript Application",
@@ -23,6 +23,7 @@
     "@nativescript/theme": "~2.3.0",
     "nativescript-angular": "~8.21.0",
     "nativescript-camera": "^4.5.0",
+    "nativescript-plugin-firebase": "10.5.0",
     "nativescript-pusher": "^1.0.1",
     "node-sass": "^4.13.1",
     "reflect-metadata": "~0.1.12",

@@ -35,3 +35,8 @@ typings/
 src/environments/*
 !src/environments/environment.dest.ts
 !src/environments/environment.ts
+
+keys/*
+
+App_Resources/Android/google-services.json
+firebase.nativescript.json

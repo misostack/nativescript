@@ -21,5 +21,8 @@ for env in "${List[@]}"
    done
 
 echo ".................................."
+echo "Copy firebase.nativescript.json.sample firebase.nativescript.json"
 echo "...............DONE..............."
 echo ".................................."
+
+cp firebase.nativescript.json.sample firebase.nativescript.json

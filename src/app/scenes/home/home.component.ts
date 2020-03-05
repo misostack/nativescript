@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { isAndroid, isIOS } from "tns-core-modules/platform";
+import * as firebase from 'nativescript-plugin-firebase';
 
 
 // capture photo
@@ -13,7 +14,7 @@ import {ImageSource, fromFile, fromResource, fromBase64} from "tns-core-modules/
 import { environment } from '@environments/environment';
 import { PusherService } from '~/app/services/pusher.service';
 import { delay } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 
 const SLIDES = [
@@ -49,6 +50,8 @@ export class HomeComponent implements OnInit {
   logMessages: Array<string> = []
   connectionState : string
   newMessage$: Observable<string>
+  userSubject$: BehaviorSubject<firebase.User> = new BehaviorSubject(null);
+  user$: Observable<firebase.User>;
 
   cameraStatus : Boolean = false
   imageAsset: string = ''
@@ -94,6 +97,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user$ = this.userSubject$.asObservable();
     this.log('Sample log')
     this.chatService.onConnectionState().subscribe(connectionState => {
       this.updateConnectionState(connectionState)      
@@ -103,6 +107,29 @@ export class HomeComponent implements OnInit {
       this.onNewMessage(msg)
     })
     this.onRequestPermission()
+  }
+
+  onLogout() {
+    firebase.logout().then(success => {
+      this.userSubject$.next(null)
+    }, error => this.log(JSON.stringify(error)))
+  }
+
+  onLogin() {
+    //firebase
+    firebase.login(
+      {
+        type: firebase.LoginType.PASSWORD,
+        passwordOptions: {
+          email: 'misostack.com@gmail.com',
+          password: '123456'
+        }
+      })
+      .then(user => {
+        this.userSubject$.next(user)
+        console.log(JSON.stringify(user))
+      })
+      .catch(error => console.log(error));    
   }
 
   onNewMessage(msg : string) {
