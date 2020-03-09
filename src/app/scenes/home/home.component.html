@@ -1,6 +1,10 @@
 <ActionBar title="{{ title }}"></ActionBar> 
 <ScrollView>
 	<StackLayout>
+		<StackLayout>
+			<Label text="Stripe"></Label>
+			<nts-creditcardview></nts-creditcardview>
+		</StackLayout>
 		<StackLayout *ngIf="user$ | async as user">
 			<Label text="UID: {{ user.uid}}"></Label>
 			<Label text="Email: {{ user.email}}"></Label>

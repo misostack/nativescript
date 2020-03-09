@@ -19,6 +19,11 @@ import { MessagesComponent } from './scenes/home/components/messages/messages.co
 import { HttpClientModule } from "@angular/common/http";
 import { HttpService } from "./services/http.service";
 
+// stripe
+import { CreditCardViewModule } from "nativescript-stripe/angular";
+import { StripeService } from "./services/stripe.service";
+import { CreditcardviewComponent } from './components/creditcardview/creditcardview.component';
+
 @NgModule({
     bootstrap: [
         AppComponent
@@ -30,6 +35,7 @@ import { HttpService } from "./services/http.service";
         ReactiveFormsModule,
         AppRoutingModule,
         HttpClientModule,
+        CreditCardViewModule
     ],
     declarations: [
         AppComponent,
@@ -37,11 +43,13 @@ import { HttpService } from "./services/http.service";
         ItemDetailComponent,
         HomeComponent,
         ExampleComponent,
-        MessagesComponent
+        MessagesComponent,
+        CreditcardviewComponent
     ],
     providers: [
         PusherService,
         HttpService,
+        StripeService,
     ],
     schemas: [
         NO_ERRORS_SCHEMA

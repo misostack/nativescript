@@ -23,6 +23,9 @@ interface IEnvironment {
     password: string
   },
   apiURL: string,
+  stripe: {
+    publishedKey: string
+  }
 }
 
 export const environment : IEnvironment = (() => {

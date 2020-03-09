@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { device, screen, isAndroid, isIOS } from "tns-core-modules/platform";
 
 const firebase = require("nativescript-plugin-firebase");
 

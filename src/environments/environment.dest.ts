@@ -17,5 +17,8 @@ export const environment = {
     user: '',
     password: ''
   },
-  apiURL: 'http://localhost:3000/api',  
+  apiURL: 'http://localhost:3000/api',
+  stripe: {
+    publishedKey: ''
+  }  
 };

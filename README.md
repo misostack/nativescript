@@ -96,3 +96,7 @@ ng g c scenes/home
 From : https://thebojan.ninja/2015/04/08/high-cohesion-loose-coupling/
 
 - Another : https://www.tutorialspoint.com/sdlc/sdlc_rad_model.htm
+
+## Stripe
+
+- https://medium.com/@williamjuan027/handling-payment-in-nativescript-using-stripe-and-firestore-e999303a2cfb
