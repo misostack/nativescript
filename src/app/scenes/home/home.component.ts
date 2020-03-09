@@ -17,6 +17,7 @@ import { delay } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import { FormGroup, FormControl } from '@angular/forms';
+import { HttpService } from '~/app/services/http.service';
 
 const SLIDES = [
 	{
@@ -63,9 +64,11 @@ export class HomeComponent implements OnInit {
   chatForm: FormGroup = new FormGroup({
     message: new FormControl('message')
   })
+  authResponse$: Observable<any>;
 
   constructor(
     private http: HttpClient,
+    private httpService: HttpService,
     private chatService: PusherService,
     private _ngZOne: NgZone
     ) {
@@ -126,20 +129,35 @@ export class HomeComponent implements OnInit {
   }
 
   onLogin() {
+    // {
+    //   type: firebase.LoginType.PASSWORD,
+    //   passwordOptions: {
+    //     email: 'misostack.com@gmail.com',
+    //     password: '123456'
+    //   }
+    // }    
     //firebase
-    firebase.login(
-      {
-        type: firebase.LoginType.PASSWORD,
-        passwordOptions: {
-          email: 'misostack.com@gmail.com',
-          password: '123456'
+    this.authResponse$ = this.httpService.post('/auth/request', {
+      email: environment.mock.user, 
+      password: environment.mock.password
+    });
+    this.authResponse$.subscribe(token => {
+      console.log('token', token);
+      if (token) {
+        const opts = {
+          type: firebase.LoginType.CUSTOM,
+          customOptions: {
+            token: token
+          }
         }
-      })
-      .then(user => {
-        this.userSubject$.next(user)
-        console.log(JSON.stringify(user))
-      })
-      .catch(error => console.log(error));    
+        firebase.login(opts)
+          .then(user => {
+            this.userSubject$.next(user)
+            console.log(JSON.stringify(user))
+          })
+          .catch(error => console.log(error));    
+      }
+    });    
   }
 
   prepareMessage = (message: string) => {

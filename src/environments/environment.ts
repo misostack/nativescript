@@ -15,7 +15,14 @@ interface IEnvironment {
     GLOBAL_CHANNEL: string,
     GLOBAL_EVENTS: Array<string>,
     DEFAULT_EVENT: string
-  } 
+  },
+  debug: boolean,
+  mock: {
+    token: string,
+    user: string,
+    password: string
+  },
+  apiURL: string,
 }
 
 export const environment : IEnvironment = (() => {

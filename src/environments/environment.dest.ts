@@ -10,5 +10,12 @@ export const environment = {
     GLOBAL_CHANNEL: 'global',
     GLOBAL_EVENTS: ['message', 'notification'],
     DEFAULT_EVENT: 'message'
-  }
+  },
+  debug: true,
+  mock: {
+    token: '',
+    user: '',
+    password: ''
+  },
+  apiURL: 'http://localhost:3000/api',  
 };

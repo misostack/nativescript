@@ -16,6 +16,8 @@ import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
 import { ReactiveFormsModule } from "@angular/forms";
 import { PusherService } from "./services/pusher.service";
 import { MessagesComponent } from './scenes/home/components/messages/messages.component';
+import { HttpClientModule } from "@angular/common/http";
+import { HttpService } from "./services/http.service";
 
 @NgModule({
     bootstrap: [
@@ -26,7 +28,8 @@ import { MessagesComponent } from './scenes/home/components/messages/messages.co
         NativeScriptHttpClientModule,
         NativeScriptFormsModule,
         ReactiveFormsModule,
-        AppRoutingModule
+        AppRoutingModule,
+        HttpClientModule,
     ],
     declarations: [
         AppComponent,
@@ -37,7 +40,8 @@ import { MessagesComponent } from './scenes/home/components/messages/messages.co
         MessagesComponent
     ],
     providers: [
-        PusherService
+        PusherService,
+        HttpService,
     ],
     schemas: [
         NO_ERRORS_SCHEMA
