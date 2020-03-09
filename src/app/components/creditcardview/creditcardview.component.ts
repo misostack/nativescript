@@ -3,6 +3,9 @@ import { publishableKey } from '@app/services/stripe.service';
 import { environment } from '@environments/environment';
 import { CreditCardView, PaymentMethod, Stripe, Token, Card } from "nativescript-stripe";
 import { registerElement } from "nativescript-angular/element-registry";
+import { HttpService } from '~/app/services/http.service';
+import { Observable } from 'rxjs';
+import { isAndroid, isIOS } from "tns-core-modules/platform";
 
 @Component({
   selector: 'nts-creditcardview',
@@ -12,11 +15,13 @@ import { registerElement } from "nativescript-angular/element-registry";
 export class CreditcardviewComponent implements OnInit {
   token: string;
   payment: string;
+  payment$: Observable<any>;
   private stripe: Stripe;
   @ViewChild('card', {read: true, static: true}) private card : ElementRef
 
   constructor(
-    public changeDetectionRef: ChangeDetectorRef
+    public changeDetectionRef: ChangeDetectorRef,
+    private httpService: HttpService
   ) {
     this.stripe = new Stripe(publishableKey);
   }
@@ -34,8 +39,18 @@ export class CreditcardviewComponent implements OnInit {
     this.token = "Fetching token...";
     this.stripe.createToken(cardView.card, (error, token) => {
       this.token = error ? error.message : this.formatToken(token);
+      this.processPayment(token.id)
       this.changeDetectionRef.detectChanges();
     });
+  }
+
+  processPayment(source) {
+    this.payment$ = this.httpService.post('/payment/process', 
+    {source, description: 'Example Payment on ' + (isAndroid ? 'Android' : 'IOS')})
+    this.payment$.subscribe(payment => {
+      this.payment = `ID: ${payment.id} --- paid: ${payment.paid} --- status: ${payment.status} -- amount: ${payment.amount}`
+      this.changeDetectionRef.detectChanges();
+    })
   }
 
   private formatToken(token: Token): string {
