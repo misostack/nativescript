@@ -38,14 +38,6 @@ export class CreditcardviewComponent implements OnInit {
     });
   }
 
-  createPaymentMethod(cardView: CreditCardView): void {
-    this.payment = "Fetching payment method...";
-    this.stripe.createPaymentMethod(cardView.card, (error, pm) => {
-      this.payment = error ? error.message : this.formatPaymentMethod(pm);
-      this.changeDetectionRef.detectChanges();
-    });
-  }
-
   private formatToken(token: Token): string {
     return `\n\nToken:\nID: ${token.id}\nCard: ${token.card.brand} (...${token.card.last4})`;
   }
